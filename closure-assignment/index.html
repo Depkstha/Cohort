@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Interactive application for creating and managing color preferences"
+    />
+    <title>Color Changer</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="color-changer">
+      <header class="header">
+        <h1 class="header-title">Color Changer</h1>
+      </header>
+
+      <section>
+        <div class="form-group">
+          <label for="colorInput">Enter color code</label>
+          <input
+            type="text"
+            id="colorInput"
+            class="color-input"
+            name="color"
+            placeholder="#FFFFFF"
+            required
+          />
+          <small> Supports HEX </small>
+        </div>
+
+        <button type="button" class="btn create-btn">Create</button>
+        
+      </section>
+
+      <section class="color-preview">
+        <div class="buttons">
+      
+        </div>
+      </section>
+
+    </main>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>
