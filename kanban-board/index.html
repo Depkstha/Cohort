@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban Board</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="logo">Kanban Board</a>
+      <div class="nav-links">
+        <a class="toggle-button" href="javascript:void(0)">
+          <i id="toggle-icon" class="bi"></i>
+        </a>
+      </div>
+    </nav>
+
+    <main class="container">
+      <div class="boards">
+        <div class="board">
+          <div class="board-header">
+            <div class="board-title">
+              <span class="color-preview"></span>
+              <h5>To Do</h5>
+              <span class="count-badge">3</span>
+            </div>
+            <button class="add-task-btn">
+              <i class="bi bi-plus-circle-dotted"></i> Add Task
+            </button>
+          </div>
+
+          <div class="board-body">
+            <article draggable="true" class="post-card">
+              <div class="post-meta">
+                <span class="author">John Doe</span>
+                <span class="date">Oct 5, 2023</span>
+              </div>
+              <h2 class="post-title">Getting Started with Web Development</h2>
+              <div class="post-content">
+                <p>Learn how to build your first website...</p>
+              </div>
+              <div class="post-tags">
+                <span class="tag">webdev</span>
+                <span class="tag">beginners</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="board">
+          <div class="board-header">
+            <div class="board-title">
+              <span class="color-preview"></span>
+              <h5>To Do</h5>
+              <span class="count-badge">3</span>
+            </div>
+            <button class="add-task-btn">
+              <i class="bi bi-plus-circle-dotted"></i> Add Task
+            </button>
+          </div>
+
+          <div class="board-body">
+            <article draggable="true" class="post-card">
+              <div class="post-meta">
+                <span class="author">John Doe</span>
+                <span class="date">Oct 5, 2023</span>
+              </div>
+              <h2 class="post-title">Getting Started with Web Development</h2>
+              <div class="post-content">
+                <p>Learn how to build your first website...</p>
+              </div>
+              <div class="post-tags">
+                <span class="tag">webdev</span>
+                <span class="tag">beginners</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="board">
+          <div class="board-header">
+            <div class="board-title">
+              <span class="color-preview"></span>
+              <h5>To Do</h5>
+              <span class="count-badge">3</span>
+            </div>
+            <button class="add-task-btn">
+              <i class="bi bi-plus-circle-dotted"></i> Add Task
+            </button>
+          </div>
+
+          <div class="board-body">
+            <article draggable="true" class="post-card">
+              <div class="post-meta">
+                <span class="author">John Doe</span>
+                <span class="date">Oct 5, 2023</span>
+              </div>
+              <h2 class="post-title">Getting Started with Web Development</h2>
+              <div class="post-content">
+                <p>Learn how to build your first website...</p>
+              </div>
+              <div class="post-tags">
+                <span class="tag">webdev</span>
+                <span class="tag">beginners</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>© 2025 Kanban Board. Cohort.</p>
+    </footer>
+
+    <script src="./main.js"></script>
+  </body>
+</html>

@@ -9,6 +9,7 @@
 //Number
 let number = 123456;
 console.log(typeof number);
+console.log(4 / NaN ** 0 + 2);
 
 //Besides regular number there are so callled "special numeric values" which also belongs to Number data type
 //Infinity, -Infinity and NaN // typeof these are number
@@ -57,6 +58,12 @@ let name = null;
 console.log(name);
 console.log(typeof name);
 
+let newNumber = "42";
+console.log(Number(newNumber));
+console.log(parseInt(newNumber));
+console.log(parseFloat(newNumber));
+
+
 //Undefined 
 //It means value is not assigned. If a variable is declared but not assigned then its value is undefined.
 
@@ -76,5 +83,15 @@ console.log(lname);
 //Objects and Symbols
 //Object are non primitive data type used to store collection of data and more complex entities in key value pair.
 
-console.log(4 / NaN ** 0 + 2);
+ const user = {
+    fname: "Deepak",
+    lname: "Shrestha",
+    age: 30
+ }
+
+ console.log(typeof user);
+ 
+
+ const symbol = Symbol("id")
+ console.log(typeof symbol);
  
