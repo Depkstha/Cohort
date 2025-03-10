@@ -1,7 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
-  --color-primary: #0069C2;
-  --bg-primary: ghostwhite;
+  --color-primary: #0069c2;
+  --color-secondary: #212529;
+  --color-green: #198754;
+  --bg-primary: #f8f8ff;
+  --modal-bg: ghostwhite;
   --border-primary: #606060;
   --text-primary: #333;
   --shadow-bg: hsl(0, 0%, 80%);
@@ -12,6 +15,7 @@
   --text-primary: ghostwhite;
   --border-primary: #cdcdcd;
   --shadow-bg: #606060;
+  --modal-bg: #212529;
 }
 
 * {
@@ -61,7 +65,7 @@ body {
   }
 }
 
-.post-card {
+.task-card {
   max-width: 300px;
   margin: 2em auto;
   padding: 1.5em;
@@ -120,6 +124,8 @@ body {
 }
 
 .board {
+  min-height: 80lvh;
+  width: 316px;
   padding: 1em 1em;
   border: 1px dashed var(--border-primary);
 }
@@ -147,7 +153,7 @@ button {
   gap: 0.5em;
 }
 
-.add-task-btn{
+.add-task-btn {
   color: var(--color-primary);
   &:hover {
     filter: drop-shadow(0 0 4px var(--shadow-bg));
@@ -169,4 +175,78 @@ button {
   .nav-links a {
     margin-left: 1em;
   }
+}
+
+/* Dragging */
+.dragging {
+  opacity: 0.5;
+}
+
+.board.dragover {
+  background-color: var(--shadow-bg);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  padding: 0.2em 0.8em;
+  border-radius: 5px;
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  padding: 0.2em 0.8em;
+  border-radius: 5px;
+}
+
+/* Modal */
+
+.modal-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  height: 100vh;
+  width: 100vw;
+}
+
+.modal {
+  background-color: var(--modal-bg);
+  width: 500px;
+  max-width: 100%;
+  padding: 1.75em;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(56, 65, 74, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5em;
+}
+
+.modal-title {
+  font-size: 1.2em;
+  font-weight: inherit;
+}
+
+.modal-body {
+  margin-bottom: 1.5em;
+}
+
+.modal-footer {
+  text-align: end;
+}
+
+#close {
+  font-size: 1.2em;
+}
+
+.modal-container.show {
+  opacity: 1;
+  pointer-events: auto;
 }

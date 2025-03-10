@@ -35,7 +35,7 @@
           </div>
 
           <div class="board-body">
-            <article draggable="true" class="post-card">
+            <article draggable="true" class="task-card">
               <div class="post-meta">
                 <span class="author">John Doe</span>
                 <span class="date">Oct 5, 2023</span>
@@ -64,8 +64,8 @@
             </button>
           </div>
 
-          <div class="board-body">
-            <article draggable="true" class="post-card">
+          <div id="to-do-task-board" class="board-body dropzone">
+            <article draggable="true" class="task-card">
               <div class="post-meta">
                 <span class="author">John Doe</span>
                 <span class="date">Oct 5, 2023</span>
@@ -94,8 +94,8 @@
             </button>
           </div>
 
-          <div class="board-body">
-            <article draggable="true" class="post-card">
+          <div id="doing-task-board" class="board-body dropzone">
+            <article draggable="true" class="task-card">
               <div class="post-meta">
                 <span class="author">John Doe</span>
                 <span class="date">Oct 5, 2023</span>
@@ -109,6 +109,57 @@
                 <span class="tag">beginners</span>
               </div>
             </article>
+          </div>
+        </div>
+
+        <div class="board">
+          <div class="board-header">
+            <div class="board-title">
+              <span class="color-preview"></span>
+              <h5>To Do</h5>
+              <span class="count-badge">3</span>
+            </div>
+            <button class="open add-task-btn">
+              <i class="bi bi-plus-circle-dotted"></i> Add Task
+            </button>
+          </div>
+
+          <div id="completed-task-board" class="board-body dropzone">
+            <article draggable="true" class="task-card">
+              <div class="post-meta">
+                <span class="author">John Doe</span>
+                <span class="date">Oct 5, 2023</span>
+              </div>
+              <h2 class="post-title">Getting 1 Started with Web Development</h2>
+              <div class="post-content">
+                <p>Learn how to build your first website...</p>
+              </div>
+              <div class="post-tags">
+                <span class="tag">webdev</span>
+                <span class="tag">beginners</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div id="modal-container" class="modal-container">
+        <div class="modal">
+          <div class="modal-header">
+            <h5 class="modal-title mb-0">Add New Task</h5>
+            <button class="close"><i class="bi bi-dash-circle-dotted"></i></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere
+              cupiditate eligendi quidem quisquam, labore reiciendis esse alias.
+              Quisquam vel expedita consequatur, totam, quidem sint dolores
+              impedit, sapiente mollitia fugiat sit?
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button class="close btn-secondary">Close</button>
+            <button type="submit" class="btn-primary">Add</button>
           </div>
         </div>
       </div>
