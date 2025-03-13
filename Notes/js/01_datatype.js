@@ -95,3 +95,6 @@ console.log(lname);
  const symbol = Symbol("id")
  console.log(typeof symbol);
  
+//  console.log("42"++4);
+var z = 1;
+y = z = console.log(typeof y);

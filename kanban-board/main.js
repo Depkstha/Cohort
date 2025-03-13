@@ -1,53 +1,40 @@
-// Dark mode implementation
-
-const toggleButton = document.querySelector(".toggle-button");
-const toggleIcon = document.getElementById("toggle-icon");
-const body = document.body;
-
-const currentTheme = localStorage.getItem("theme") || "light";
-
-const currentToggleIconClass =
-  currentTheme == "dark-mode" ? "bi-brightness-high" : "bi-moon-stars";
-toggleIcon.classList.add(currentToggleIconClass);
-
-body.classList.add(currentTheme);
-
-toggleButton.addEventListener("click", () => {
-  const isDarkMode = body.classList.contains("dark-mode");
-  const newTheme = isDarkMode ? "light" : "dark-mode";
-  const newIconClass =
-    newTheme == "dark-mode" ? "bi-brightness-high" : "bi-moon-stars";
-
-  body.classList.remove("dark-mode", "light");
-  body.classList.add(newTheme);
-
-  toggleIcon.classList.remove("bi-brightness-high", "bi-moon-stars");
-  toggleIcon.classList.add(newIconClass);
-
-  localStorage.setItem("theme", newTheme);
-});
-
-//Toggle modal implementation
-const modalPopupButtons = document.querySelectorAll(".open");
-const modalController = document.getElementById("modal-container");
-const modalCloseButtons = document.querySelectorAll(".close");
-modalPopupButtons.forEach((openButton) => {
-  openButton.addEventListener("click", () => {
-    modalController.classList.add("show");
-  });
-});
-
-modalCloseButtons.forEach((closeButton) => {
-  closeButton.addEventListener("click", () => {
-    modalController.classList.remove("show");
-    body.style.removeProperty("background-color");
-  })
-})
-
 // Draggable implementation
-let dragged;
+"use strict";
+
+class Board {
+  constructor(title, color) {
+    this.title = title;
+    this.color = color;
+  }
+}
+
+class Task {
+  constructor(
+    boardId,
+    title,
+    description,
+    dueDate,
+    priority,
+    tags,
+    createdDate
+  ) {
+    this.boardId = boardId;
+    this.title = title;
+    this.description = description;
+    this.dueDate = dueDate;
+    this.priority = priority;
+    this.tags = tags;
+    this.createdDate = createdDate;
+  }
+}
 
 const draggableTaskCards = document.querySelectorAll(".task-card");
+const addBoardForm = document.getElementById("boardForm");
+const boards = document.querySelectorAll(".board");
+
+const boardArray = [];
+const taskArray = [];
+let dragged;
 
 draggableTaskCards.forEach((draggable) => {
   draggable.addEventListener("drag", (event) => {
@@ -63,8 +50,6 @@ draggableTaskCards.forEach((draggable) => {
     event.target.classList.remove("dragging");
   });
 });
-
-const boards = document.querySelectorAll(".board");
 
 boards.forEach((board) => {
   board.addEventListener(
@@ -93,7 +78,55 @@ boards.forEach((board) => {
     event.preventDefault();
     if (event.target.classList.contains("board")) {
       event.target.classList.remove("dragover");
-      event.target.appendChild(dragged);
+      event.target.querySelector(".board-body").appendChild(dragged);
     }
   });
 });
+
+addBoardForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  const formData = new FormData(this);
+  const newBoard = new Board(formData.get("title"), formData.get("color"));
+
+  boardArray.push(newBoard);
+  
+  console.log(boardArray);
+});
+
+function createBoard() {
+  let html;
+  html = `<div class="board">
+          <div class="board-header">
+            <div class="board-title">
+              <span class="color-preview"></span>
+              <h5 onclick="openModal('#addBoardModal')">To Do</h5>
+              <span class="count-badge">3</span>
+            </div>
+            <button class="add-task-btn" onclick="openModal('#addTaskModal')">
+              <i class="bi bi-plus-circle-dotted"></i> Add Task
+            </button>
+          </div>
+
+          <div class="board-body">
+            <article draggable="true" class="task-card">
+              <div class="task-card-header">
+                <div class="task-meta">
+                  <span class="date">Oct 5, 2023</span>
+                  <span class="priority">High</span>
+                </div>
+                <div class="dropdown">
+                  <button><i class="bi bi-three-dots-vertical"></i></button>
+                </div>
+              </div>
+              <h2 class="task-title">Getting Started with Web Development</h2>
+              <div class="task-content">
+                <p>Learn how to build your first website...</p>
+              </div>
+              <div class="task-tags">
+                <span class="tag">webdev</span>
+                <span class="tag">beginners</span>
+              </div>
+            </article>
+          </div>
+        </div>`;
+}

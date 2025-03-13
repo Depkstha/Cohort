@@ -10,6 +10,7 @@
     />
     <link rel="stylesheet" href="./style.css" />
   </head>
+
   <body>
     <nav class="navbar">
       <a href="/" class="logo">Kanban Board</a>
@@ -21,146 +22,224 @@
     </nav>
 
     <main class="container">
-      <div class="boards">
-        <div class="board">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 5;
+          margin: 20px 0;
+        "
+      >
+        <div>
+          <input
+            type="text"
+            id="search"
+            class="form-control"
+            name="search"
+            placeholder="Search..."
+          />
+        </div>
+        <div>
+          <button onclick="openModal('#addBoardModal')" class="btn btn-primary">
+            Add Board
+          </button>
+        </div>
+      </div>
+
+      <div class="boards scrollable-x">
+        <!-- <div class="board">
           <div class="board-header">
             <div class="board-title">
               <span class="color-preview"></span>
-              <h5>To Do</h5>
+              <h5 onclick="openModal('#addBoardModal')">To Do</h5>
               <span class="count-badge">3</span>
             </div>
-            <button class="add-task-btn">
+            <button class="add-task-btn" onclick="openModal('#addTaskModal')">
               <i class="bi bi-plus-circle-dotted"></i> Add Task
             </button>
           </div>
 
           <div class="board-body">
             <article draggable="true" class="task-card">
-              <div class="post-meta">
-                <span class="author">John Doe</span>
-                <span class="date">Oct 5, 2023</span>
+              <div class="task-card-header">
+                <div class="task-meta">
+                  <span class="date">Oct 5, 2023</span>
+                  <span class="priority">High</span>
+                </div>
+                <div class="dropdown">
+                  <button><i class="bi bi-three-dots-vertical"></i></button>
+                </div>
               </div>
-              <h2 class="post-title">Getting Started with Web Development</h2>
-              <div class="post-content">
+              <h2 class="task-title">Getting Started with Web Development</h2>
+              <div class="task-content">
                 <p>Learn how to build your first website...</p>
               </div>
-              <div class="post-tags">
+              <div class="task-tags">
                 <span class="tag">webdev</span>
                 <span class="tag">beginners</span>
               </div>
             </article>
           </div>
-        </div>
+        </div> -->
+      </div>
 
-        <div class="board">
-          <div class="board-header">
-            <div class="board-title">
-              <span class="color-preview"></span>
-              <h5>To Do</h5>
-              <span class="count-badge">3</span>
-            </div>
-            <button class="add-task-btn">
-              <i class="bi bi-plus-circle-dotted"></i> Add Task
+      <div
+        id="addTaskModal"
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title">Add New Task</div>
+            <button type="button"
+              class="modal-close"
+              onclick="closeModal('#addTaskModal')"
+              aria-label="Close modal"
+            >
+              &times;
             </button>
           </div>
+          <form class="taskForm" method="POST">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label" for="title"
+                  >Title <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  id="title"
+                  class="form-control"
+                  name="title"
+                  placeholder="Enter Task Title"
+                  required
+                />
+              </div>
 
-          <div id="to-do-task-board" class="board-body dropzone">
-            <article draggable="true" class="task-card">
-              <div class="post-meta">
-                <span class="author">John Doe</span>
-                <span class="date">Oct 5, 2023</span>
+              <div class="mb-3">
+                <label class="form-label" for="dueDate"
+                  >Due Date <span class="text-danger">*</span></label
+                >
+                <input
+                  type="date"
+                  id="dueDate"
+                  class="form-control"
+                  name="dueDate"
+                  required
+                />
               </div>
-              <h2 class="post-title">Getting Started with Web Development</h2>
-              <div class="post-content">
-                <p>Learn how to build your first website...</p>
-              </div>
-              <div class="post-tags">
-                <span class="tag">webdev</span>
-                <span class="tag">beginners</span>
-              </div>
-            </article>
-          </div>
-        </div>
 
-        <div class="board">
-          <div class="board-header">
-            <div class="board-title">
-              <span class="color-preview"></span>
-              <h5>To Do</h5>
-              <span class="count-badge">3</span>
+              <div class="mb-3">
+                <label class="form-label" for="priority"
+                  >Priority <span class="text-danger">*</span></label
+                >
+                <select
+                  id="priority"
+                  class="form-control"
+                  name="priority"
+                  required
+                >
+                  <option value="" selected>Select</option>
+                  <option value="1">High</option>
+                  <option value="2">Medium</option>
+                  <option value="3">Low</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="tags"
+                  >Tags <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  id="tags"
+                  class="form-control"
+                  name="tags"
+                  placeholder="Comma-separated (e.g., Urgent,Development,Bug Fix)"
+                  required
+                />
+              </div>
+
+              <div>
+                <label class="form-label" for="description"
+                  >Description <span class="text-danger">*</span></label
+                >
+                <textarea
+                  name="description"
+                  id="description"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Enter Task Description"
+                  required
+                ></textarea>
+              </div>
             </div>
-            <button class="add-task-btn">
-              <i class="bi bi-plus-circle-dotted"></i> Add Task
-            </button>
-          </div>
 
-          <div id="doing-task-board" class="board-body dropzone">
-            <article draggable="true" class="task-card">
-              <div class="post-meta">
-                <span class="author">John Doe</span>
-                <span class="date">Oct 5, 2023</span>
-              </div>
-              <h2 class="post-title">Getting Started with Web Development</h2>
-              <div class="post-content">
-                <p>Learn how to build your first website...</p>
-              </div>
-              <div class="post-tags">
-                <span class="tag">webdev</span>
-                <span class="tag">beginners</span>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        <div class="board">
-          <div class="board-header">
-            <div class="board-title">
-              <span class="color-preview"></span>
-              <h5>To Do</h5>
-              <span class="count-badge">3</span>
+            <div class="modal-footer">
+              <button type="button"
+                class="btn btn-secondary"
+                onclick="closeModal('#addTaskModal')"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">Add</button>
             </div>
-            <button class="open add-task-btn">
-              <i class="bi bi-plus-circle-dotted"></i> Add Task
-            </button>
-          </div>
-
-          <div id="completed-task-board" class="board-body dropzone">
-            <article draggable="true" class="task-card">
-              <div class="post-meta">
-                <span class="author">John Doe</span>
-                <span class="date">Oct 5, 2023</span>
-              </div>
-              <h2 class="post-title">Getting 1 Started with Web Development</h2>
-              <div class="post-content">
-                <p>Learn how to build your first website...</p>
-              </div>
-              <div class="post-tags">
-                <span class="tag">webdev</span>
-                <span class="tag">beginners</span>
-              </div>
-            </article>
-          </div>
+          </form>
         </div>
       </div>
 
-      <div id="modal-container" class="modal-container">
+      <div
+        id="addBoardModal"
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+      >
         <div class="modal">
           <div class="modal-header">
-            <h5 class="modal-title mb-0">Add New Task</h5>
-            <button class="close"><i class="bi bi-dash-circle-dotted"></i></button>
+            <div class="modal-title">Add New Board</div>
+            <button type="button"
+              class="modal-close"
+              onclick="closeModal('#addBoardModal')"
+              aria-label="Close modal"
+            >
+              &times;
+            </button>
           </div>
-          <div class="modal-body">
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere
-              cupiditate eligendi quidem quisquam, labore reiciendis esse alias.
-              Quisquam vel expedita consequatur, totam, quidem sint dolores
-              impedit, sapiente mollitia fugiat sit?
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button class="close btn-secondary">Close</button>
-            <button type="submit" class="btn-primary">Add</button>
-          </div>
+          <form id="boardForm" method="POST">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label" for="title"
+                  >Title <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  id="title"
+                  class="form-control"
+                  name="title"
+                  placeholder="Enter Board Title"
+                  required
+                />
+              </div>
+
+              <div>
+                <label class="form-label" for="title"
+                  >Color <span class="text-danger">*</span></label
+                >
+                <input type="color" id="color" name="color" required />
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                class="btn btn-secondary" type="button"
+                onclick="closeModal('#addBoardModal')"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+          </form>
         </div>
       </div>
     </main>
@@ -170,5 +249,6 @@
     </footer>
 
     <script src="./main.js"></script>
+    <script src="./utils.js"></script>
   </body>
 </html>
