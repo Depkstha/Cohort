@@ -30,11 +30,24 @@ class Task {
 
 const draggableTaskCards = document.querySelectorAll(".task-card");
 const addBoardForm = document.getElementById("boardForm");
+const boardContainer = document.getElementById("board-container");
 const boards = document.querySelectorAll(".board");
 
-const boardArray = [];
-const taskArray = [];
 let dragged;
+const boardArray = localStorage.getItem("boardArray") || [
+  new Board("To Do", "red"),
+  new Board("Doing", "yellow"),
+  new Board("Done", "green"),
+];
+const taskArray = localStorage.getItem("taskArray") || {};
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log(boardArray);
+  boardContainer.insertAdjacentHTML(
+    "beforeend",
+    boardArray.map((board) => createBoard(board, {})).join("")
+  );
+});
 
 draggableTaskCards.forEach((draggable) => {
   draggable.addEventListener("drag", (event) => {
@@ -89,18 +102,20 @@ addBoardForm.addEventListener("submit", function (event) {
   const newBoard = new Board(formData.get("title"), formData.get("color"));
 
   boardArray.push(newBoard);
-  
-  console.log(boardArray);
+  boardContainer.insertAdjacentHTML("beforeend", createBoard(newBoard, []));
+
+  localStorage.setItem("boardArray", boardArray);
 });
 
-function createBoard() {
-  let html;
-  html = `<div class="board">
+const createBoard = (board, tasks) => {
+  return `<div class="board">
           <div class="board-header">
             <div class="board-title">
-              <span class="color-preview"></span>
-              <h5 onclick="openModal('#addBoardModal')">To Do</h5>
-              <span class="count-badge">3</span>
+              <span class="color-preview" style="background: ${
+                board.color
+              }"></span>
+              <h5 onclick="openModal('#addBoardModal')">${board.title}</h5>
+              <span class="count-badge">${tasks.length || 0}</span>
             </div>
             <button class="add-task-btn" onclick="openModal('#addTaskModal')">
               <i class="bi bi-plus-circle-dotted"></i> Add Task
@@ -108,25 +123,32 @@ function createBoard() {
           </div>
 
           <div class="board-body">
-            <article draggable="true" class="task-card">
+            ${tasks.length > 0 ? tasks.map(createTaskCard).join("") : ""}
+          </div>
+        </div>`;
+};
+
+const createTaskCard = (task) => {
+  return `
+          <article draggable="true" class="task-card">
               <div class="task-card-header">
                 <div class="task-meta">
-                  <span class="date">Oct 5, 2023</span>
-                  <span class="priority">High</span>
+                  <span class="date">${task.dueDate}</span>
+                  <span class="priority">${task.priority}</span>
                 </div>
                 <div class="dropdown">
                   <button><i class="bi bi-three-dots-vertical"></i></button>
                 </div>
               </div>
-              <h2 class="task-title">Getting Started with Web Development</h2>
+              <h2 class="task-title">${task.title}</h2>
               <div class="task-content">
-                <p>Learn how to build your first website...</p>
+                <p>${task.description}</p>
               </div>
               <div class="task-tags">
-                <span class="tag">webdev</span>
+              ${task.tags.length > 0 ? task.tags.map(createTag).join("") : ""}
                 <span class="tag">beginners</span>
               </div>
-            </article>
-          </div>
-        </div>`;
-}
+            </article>`;
+};
+
+const createTag = (tag) => `<span class="tag">${tag}</span>`;
