@@ -2,23 +2,15 @@
 "use strict";
 
 class Board {
-  constructor(title, color) {
+  constructor(title, color, tasks) {
     this.title = title;
     this.color = color;
+    this.tasks = tasks;
   }
 }
 
 class Task {
-  constructor(
-    boardId,
-    title,
-    description,
-    dueDate,
-    priority,
-    tags,
-    createdDate
-  ) {
-    this.boardId = boardId;
+  constructor(title, description, dueDate, priority, tags, createdDate) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -28,24 +20,28 @@ class Task {
   }
 }
 
+// localStorage.clear();
+
 const draggableTaskCards = document.querySelectorAll(".task-card");
 const addBoardForm = document.getElementById("boardForm");
 const boardContainer = document.getElementById("board-container");
 const boards = document.querySelectorAll(".board");
 
+const todoBoard = new Board("To Do", "red", []);
+const doingBoard = new Board("Doing", "yellow", []);
+const doneBoard = new Board("Done", "green", []);
+
 let dragged;
-const boardArray = localStorage.getItem("boardArray") || [
-  new Board("To Do", "red"),
-  new Board("Doing", "yellow"),
-  new Board("Done", "green"),
+const boardArray = JSON.parse(localStorage.getItem("boardArray")) || [
+  todoBoard,
+  doingBoard,
+  doneBoard,
 ];
-const taskArray = localStorage.getItem("taskArray") || {};
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log(boardArray);
   boardContainer.insertAdjacentHTML(
     "beforeend",
-    boardArray.map((board) => createBoard(board, {})).join("")
+    boardArray.map((board) => createBoard(board)).join("")
   );
 });
 
@@ -99,15 +95,19 @@ boards.forEach((board) => {
 addBoardForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const formData = new FormData(this);
-  const newBoard = new Board(formData.get("title"), formData.get("color"));
+
+  this.reset();
+  closeModal("#addBoardModal");
+  const newBoard = new Board(formData.get("title"), formData.get("color"), []);
 
   boardArray.push(newBoard);
-  boardContainer.insertAdjacentHTML("beforeend", createBoard(newBoard, []));
 
-  localStorage.setItem("boardArray", boardArray);
+  boardContainer.insertAdjacentHTML("beforeend", createBoard(newBoard));
+
+  localStorage.setItem("boardArray", JSON.stringify(boardArray));
 });
 
-const createBoard = (board, tasks) => {
+const createBoard = (board) => {
   return `<div class="board">
           <div class="board-header">
             <div class="board-title">
@@ -115,7 +115,7 @@ const createBoard = (board, tasks) => {
                 board.color
               }"></span>
               <h5 onclick="openModal('#addBoardModal')">${board.title}</h5>
-              <span class="count-badge">${tasks.length || 0}</span>
+              <span class="count-badge">${board.tasks.length || 0}</span>
             </div>
             <button class="add-task-btn" onclick="openModal('#addTaskModal')">
               <i class="bi bi-plus-circle-dotted"></i> Add Task
@@ -123,7 +123,11 @@ const createBoard = (board, tasks) => {
           </div>
 
           <div class="board-body">
-            ${tasks.length > 0 ? tasks.map(createTaskCard).join("") : ""}
+            ${
+              board.tasks.length > 0
+                ? board.tasks.map(createTaskCard).join("")
+                : ""
+            }
           </div>
         </div>`;
 };
