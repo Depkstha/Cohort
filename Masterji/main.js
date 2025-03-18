@@ -22,14 +22,18 @@ class MoodEntry {
   }
 }
 
-const existingMoodLog = JSON.parse(localStorage.getItem("moodLog"));
-const moodLog = existingMoodLog || [];
+const existingMoodLogs = JSON.parse(localStorage.getItem("moodLogs"));
+const moodLogs = existingMoodLogs || [];
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendar = new FullCalendar.Calendar(calendarEl, {
     headerToolbar: {
       left: "title",
       right: "dayGridDay,dayGridWeek,dayGridMonth",
+    },
+    events: getDataForCalendar(moodLogs),
+    eventContent: function (info) {
+      return { html: info.event.title };
     },
   });
 
@@ -70,11 +74,41 @@ moodTrackForm.addEventListener("submit", function (event) {
   this.reset();
 
   const newEntry = new MoodEntry(new Date().toLocaleDateString(), mood);
-  moodLog.push(newEntry);
+  moodLogs.push(newEntry);
 
-  localStorage.setItem("moodLog", JSON.stringify(moodLog));
+  localStorage.setItem("moodLogs", JSON.stringify(moodLogs));
 
   submitBtn.classList.remove("loading");
 
-  console.log(moodLog);
+  // console.log(moodLogs);
+  
 });
+
+const getMoodData = (mood) => {
+  return MOOD_SET.find((e) => e.id === mood);
+}
+
+const getDataForCalendar = (moodLogs) => {
+  return moodLogs.map((log, index) => {
+    const moodData = getMoodData(log.mood);
+    console.log(moodData, log);
+    
+    return {
+      id: index,
+      title: `<img src="./assets/${moodData.emoji}" 
+               alt="${moodData.label}" 
+               class="mood-gif" 
+               width="30" 
+               height="30">`,
+      start: new Date(log.date), 
+      allDay: true,
+      editable: false,
+      extendedProps: {
+        label: moodData.label,
+      }
+    };
+  });
+};
+
+
+
