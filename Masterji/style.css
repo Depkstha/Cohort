@@ -258,7 +258,7 @@ h2 {
 }
 
 .mb-20 {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 
 .mt-30 {
@@ -267,6 +267,10 @@ h2 {
 
 .fs-14 {
   font-size: 14px;
+}
+
+.fs-20 {
+  font-size: 20px;
 }
 
 .text-muted {
@@ -283,7 +287,6 @@ h2 {
 }
 
 #quote-container {
-  margin: 20px 0;
   padding: 25px;
   border-radius: 12px;
   text-align: center;

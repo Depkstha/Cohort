@@ -117,7 +117,14 @@ const showMoodQuote = (moodId) => {
     author: "Anonymous",
   };
 
-  return `<div class="quote-icon"><img src="./assets/${moodData.emoji}" alt="${moodData.id}" class="mood-gif"></div>
+  return `<div class="quote-icon mb-20">
+            <div class="mood-option">
+                  <label class="mood-label" for="${moodData.id}">
+                      <img src="./assets/${moodData.emoji}" alt="${moodData.id}" class="mood-gif">
+                      <span class="mood-text fs-20">${moodData.label}</span>
+                  </label>
+              </div>
+        </div>
           <div class="quote-text">"${quoteData.quote}"</div>
           <div class="quote-author">— ${quoteData.author}</div>
           <div class="mt-30 fs-14 text-muted">Track your mood daily and uncover patterns in your mood swings!</div>
