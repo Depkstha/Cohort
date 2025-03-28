@@ -30,28 +30,22 @@
                     Book Archive
                 </h1>
                 <div class="relative w-full md:w-96">
-                    <input type="text" placeholder="Search volumes..."
+                    <input type="text" id="search-input" placeholder="Search volumes..."
                         class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent" />
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Controls Section -->
     <div class="max-w-7xl mx-auto px-4 py-6">
         <div class="flex flex-col sm:flex-row gap-4 justify-between items-center mb-8">
             <div class="flex items-center gap-3">
-                <select
+                <select id="sort-select"
                     class="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent">
-                    <option class="bg-gray-800">All Genres</option>
-                    <option class="bg-gray-800">Fiction</option>
-                    <option class="bg-gray-800">Non-Fiction</option>
-                </select>
-                <select
-                    class="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent">
-                    <option class="bg-gray-800">Newest First</option>
-                    <option class="bg-gray-800">Title A-Z</option>
-                    <option class="bg-gray-800">Author A-Z</option>
+                    <option class="bg-gray-800" value="latest" selected>Newest First</option>
+                    <option class="bg-gray-800" value="oldest">Oldest First</option>
+                    <option class="bg-gray-800" value="a-z">Title A-Z</option>
+                    <option class="bg-gray-800" value="z-a">Title Z-A</option>
                 </select>
             </div>
             <div class="flex gap-2">
@@ -72,9 +66,8 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="bookContainer">
-            
-        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="bookContainer"></div>
+        
     </div>
     <script src="./script.js"></script>
 </body>
