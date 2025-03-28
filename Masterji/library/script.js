@@ -6,6 +6,7 @@ const bookContainer = document.getElementById("bookContainer");
 const sortSelect = document.getElementById("sort-select");
 const searchInput = document.getElementById("search-input");
 const BOOKS_PER_PAGE = 10;
+let currentPage = 1;
 
 // functionality to toggle list and grid view
 gridButtons.forEach((button) => {
@@ -25,8 +26,18 @@ gridButtons.forEach((button) => {
 });
 
 //fetch books data
-const fetchBooks = async (page = 1, query, limit) => {
-  const API_URL = `https://api.freeapi.app/api/v1/public/books?page=${page}&limit=${limit}&query=${query}`;
+const fetchBooks = async (page = 1, query, limit = BOOKS_PER_PAGE) => {
+  const API_URL = new URL("https://api.freeapi.app/api/v1/public/books");
+
+  const params = new URLSearchParams();
+  params.set("page", page);
+  params.set("limit", limit);
+
+  if (query) params.set("query", query);
+
+  API_URL.search = params.toString();
+
+
   const options = { method: "GET", headers: { accept: "application/json" } };
 
   try {
@@ -88,35 +99,24 @@ const renderPagination = ({
   if (bookContainer.nextElementSibling)
     bookContainer.nextElementSibling.remove();
 
-  const currentPage = page;
+  currentPage = page;
   const previousPageIndex = currentPage - 1;
   const nextPageIndex = currentPage + 1;
 
-  const html = `<div class="pagination flex flex-col items-center mt-5">
-            <span class="text-sm text-gray-700 dark:text-gray-400">
-                Showing
-                <span class="font-semibold text-gray-900 dark:text-white">${
-                  previousPageIndex * limit + 1
-                }</span> to
-                <span class="font-semibold text-gray-900 dark:text-white">${
-                  previousPageIndex * limit + currentPageItems
-                }</span> of
-                <span class="font-semibold text-gray-900 dark:text-white">${totalItems}</span>
-                Entries
-            </span>
-            <div class="inline-flex mt-2 xs:mt-0">
-                <button ${
-                  !previousPage && "disabled"
-                } class="prev-button flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    Prev
-                </button>
-                <button ${
-                  !nextPage && "disabled"
-                } class="next-button flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    Next
-                </button>
-            </div>
-        </div>`;
+  const html = `
+        <div class="flex flex-col items-center mt-5">
+  <span class="text-sm text-gray-700 dark:text-gray-400">
+      Showing <span class="font-semibold text-gray-900 dark:text-white">${previousPageIndex * limit + 1}</span> to <span class="font-semibold text-gray-900 dark:text-white">${previousPageIndex * limit + currentPageItems}</span> of <span class="font-semibold text-gray-900 dark:text-white">${totalItems}</span> Entries
+  </span>
+  <div class="pagination inline-flex mt-2 xs:mt-0">
+      <button ${!previousPage && "disabled"} class="prev-button flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          Prev
+      </button>
+      <button  ${!nextPage && "disabled"} class="next-button flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          Next
+      </button>
+  </div>
+</div>`;
 
   bookContainer.insertAdjacentHTML("afterend", html);
 
@@ -135,44 +135,43 @@ const renderPagination = ({
 };
 
 const showBookCards = async (page, query, sort) => {
-  const response = await fetchBooks(page, query, (limit = BOOKS_PER_PAGE));
-  const books = response?.data?.data;
+  const response = await fetchBooks(page, query);
+  let books = response?.data?.data;
 
-  const sortedBooks = books.sort((a, b) => {
+  if (!books || books.length === 0) {
+    bookContainer.innerHTML = `<p class="text-white/60 text-center">No books found</p>`;
+    return;
+  }
+
+  // Sorting logic
+  books = books.sort((a, b) => {
+    const dateA = new Date(a.volumeInfo.publishedDate);
+    const dateB = new Date(b.volumeInfo.publishedDate);
+
     switch (sort) {
       case "newest":
-          b.volumeInfo.publishedDate - a.volumeInfo.publishedDate
-        break;
-  
-        case "oldest":
-          a.volumeInfo.publishedDate - b.volumeInfo.publishedDate
-        break;
-    
-        case "a-z":
-          a.volumeInfo.publishedDate - b.volumeInfo.publishedDate
-        break;
-
+        return dateB - dateA; // Newest first
+      case "oldest":
+        return dateA - dateB; // Oldest first
+      case "a-z":
+        return a.volumeInfo.title.localeCompare(b.volumeInfo.title);
+      case "z-a":
+        return b.volumeInfo.title.localeCompare(a.volumeInfo.title);
       default:
-        break;
+        return dateB - dateA;
     }
   });
 
-  if (books?.length === 0) {
-    bookContainer.innerHTML = `<p class="text-white/60 text-center">No books found</p>`;
-    return;
-  } else {
-    renderBookCards(response.data.data);
-    renderPagination(response?.data);
-  }
+  // Render sorted books
+  renderBookCards(books);
+  renderPagination(response?.data);
 };
 
-searchInput.addEventListener("keyup", (e) => {
-  const query = e.target.value;
-});
+// Event listeners
+searchInput.addEventListener("keyup", (e) => showBookCards(currentPage, e.target.value, sortSelect.value));
 
-sortSelect.addEventListener("change", (e) => {
-  const sortType = e.target.value;
-});
+sortSelect.addEventListener("change", (e) => showBookCards(currentPage, searchInput.value, e.target.value));
+
 
 document.addEventListener("DOMContentLoaded", () => {
   showBookCards();
